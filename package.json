@@ -1,0 +1,63 @@
+{
+  "name": "simple-react-ssr",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "4.2.4",
+    "@testing-library/react": "9.3.2",
+    "@testing-library/user-event": "7.1.2",
+    "express": "4.17.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-helmet": "6.1.0",
+    "react-router-dom": "5.2.0",
+    "styled-components": "5.1.1",
+    "styled-reset": "4.2.2",
+    "typescript": "3.9.7"
+  },
+  "scripts": {
+    "dev:build-client": "NODE_ENV=development webpack --config config/webpack.client.js --mode=development -w",
+    "dev:build-server": "NODE_ENV=development webpack --config config/webpack.server.js --mode=development -w",
+    "dev:start": "nodemon ./build-server/index.js",
+    "dev": "npm-run-all --parallel dev:*"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "resolutions": {
+    "styled-components": "^5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/preset-react": "7.10.4",
+    "@babel/preset-typescript": "7.10.4",
+    "@types/express": "4.17.7",
+    "@types/node": "14.0.27",
+    "@types/react": "16.9.46",
+    "@types/react-dom": "16.9.8",
+    "@types/react-helmet": "6.1.0",
+    "@types/react-router-dom": "5.1.5",
+    "@types/styled-components": "5.1.2",
+    "babel-loader": "8.1.0",
+    "babel-plugin-styled-components": "1.11.1",
+    "html-webpack-plugin": "4.3.0",
+    "nodemon": "2.0.4",
+    "npm-run-all": "4.1.5",
+    "webpack": "4.42.0",
+    "webpack-cli": "3.3.12",
+    "webpack-node-externals": "1.7.2"
+  }
+}
