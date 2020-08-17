@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import Helmet from 'react-helmet';
+import Helmet from 'react-helmet'; 
 
 export const IndexPage = () => {
   const [count, setCount] = useState<number>(0);
   const onClick = () => {
-    console.log('bla')
     setCount((c: number) => c + 1);
   }
 
