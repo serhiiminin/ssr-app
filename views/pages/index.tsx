@@ -13,7 +13,8 @@ export const IndexPage = () => {
         <title>Index Page</title>
         <meta name="description" content="index page" />
       </Helmet>
-      <button onClick={onClick}>Save</button>
+
+        <button onClick={onClick}>Save</button>
       <div>Index page {count}</div>
     </>
   );
