@@ -9,7 +9,7 @@ import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
-import { App } from '../views/App';
+import { App } from '../views/App.tsx';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -20,7 +20,7 @@ app.use(express.static('./build-client'));
 
 app.get('/*', async (req, res) => {
   const sheet = new ServerStyleSheet();
-  const context = {} as any;
+  const context = {};
   try {
     const markup = ReactDOMServer.renderToString(
       <StyleSheetManager sheet={sheet.instance}>
@@ -41,12 +41,13 @@ app.get('/*', async (req, res) => {
         .replace('</head>', `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}</head>`)
     );
   } catch (error) {
-    res.status(500).send('Oops, better luck next time!');
+    return res.status(500).send('Oops, better luck next time!');
   } finally {
     sheet.seal();
   }
 });
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Server is listening on port ${PORT}`);
 });

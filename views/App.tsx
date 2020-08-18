@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
-import { IndexPage } from './pages/index';
+import { IndexPage } from './pages/index.tsx';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
