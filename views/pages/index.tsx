@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Helmet from "react-helmet";
+import React, { useState } from 'react';
+import Helmet from 'react-helmet';
 
-export const IndexPage = () => {
+export const IndexPage: React.FC = () => {
   const [count, setCount] = useState<number>(0);
   const onClick = () => {
     setCount((c: number) => c + 1);
@@ -14,8 +14,13 @@ export const IndexPage = () => {
         <meta name="description" content="index page" />
       </Helmet>
 
-        <button onClick={onClick}>Save</button>
-      <div>Index page {count}</div>
+      <button type="submit" onClick={onClick}>
+        Save
+      </button>
+      <div>
+        Index page
+        {count}
+      </div>
     </>
   );
 };

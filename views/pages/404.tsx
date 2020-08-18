@@ -1,7 +1,7 @@
-import React from "react";
-import Helmet from "react-helmet";
+import React from 'react';
+import Helmet from 'react-helmet';
 
-export const NotFoundPage = () => (
+export const NotFoundPage: React.FC = () => (
   <>
     <Helmet>
       <title>Not Found</title>

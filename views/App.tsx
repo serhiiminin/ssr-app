@@ -1,7 +1,7 @@
-import React from "react";
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
-import reset from "styled-reset";
-import { IndexPage } from "./pages/index";
+import React from 'react';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import reset from 'styled-reset';
+import { IndexPage } from './pages/index';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -12,8 +12,8 @@ const S = styled.div`
   color: white;
 `;
 
-export const App = () => (
-  <ThemeProvider theme={{ mode: "light" }}>
+export const App: React.FC = () => (
+  <ThemeProvider theme={{ mode: 'light' }}>
     <GlobalStyle />
     <S>hello</S>
     <div>
