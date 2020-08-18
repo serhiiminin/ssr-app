@@ -9,7 +9,7 @@ import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
-import { App } from '../views/App.tsx';
+import { App } from '../views/App';
 
 const readFile = util.promisify(fs.readFile);
 
