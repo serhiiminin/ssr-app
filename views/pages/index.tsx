@@ -13,7 +13,6 @@ export const IndexPage: React.FC = () => {
         <title>Index Page</title>
         <meta name="description" content="index page" />
       </Helmet>
-
       <button type="submit" onClick={onClick}>
         Save
       </button>

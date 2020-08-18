@@ -1,3 +1,4 @@
 client/serviceWorker.js
+config/
 build-client
 build-server

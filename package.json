@@ -20,8 +20,8 @@
     "dev:build-server": "NODE_ENV=development webpack --config config/webpack.server.js --mode=development -w",
     "dev:start": "nodemon ./build-server/index.js",
     "dev": "npm-run-all --parallel dev:*",
-    "lint": "eslint ./ --ext '.js,.jsx,.ts,.tsx' --max-warnings 0 $LINT_ARGS",
-    "lint:fix": "LINT_ARGS=--fix yarn run lint"
+    "eslint": "eslint ./ $LINT_ARGS",
+    "eslint:fix": "LINT_ARGS=--fix yarn run eslint"
   },
   "resolutions": {
     "styled-components": "^5"
