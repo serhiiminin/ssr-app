@@ -41,6 +41,7 @@ app.get('/*', async (req, res) => {
         .replace('</head>', `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}</head>`)
     );
   } catch (error) {
+    console.log(error);
     return res.status(500).send('Oops, better luck next time!');
   } finally {
     sheet.seal();
