@@ -30,9 +30,9 @@ const populateRoutesConfigWithData = (
   settledData: PromiseFulfilledResult<FetchWithPathWrapper>[],
   routesList: Routes
 ) =>
-  settledData.reduce((acc, key) => {
-    const { error, data } = key.value;
-    const path = key.value.path as RoutesPaths;
+  settledData.reduce((acc, route) => {
+    const { error, data } = route.value;
+    const path = route.value.path as RoutesPaths;
     return {
       ...routesList,
       [path]: {
@@ -43,20 +43,20 @@ const populateRoutesConfigWithData = (
     };
   }, routesList);
 
-export type Fetch = (currentRoute: string) => Promise<Routes | undefined>;
+export type Fetch = (currentRoute: string) => Promise<Routes>;
 
-export const createFetchInitialData = (routesList: Routes): Fetch => async (currentRoute: string) => {
+export const createFetchInitialData = (routesConfig: Routes): Fetch => async (currentRoute: string) => {
   try {
-    const matchedRoutes = Object.entries(getMatchedRoutesWithFetchers(currentRoute, routesList)) as [
+    const matchedRoutes = Object.entries(getMatchedRoutesWithFetchers(currentRoute, routesConfig)) as [
       RoutesPaths,
       InitialDataFetch
     ][];
     const settledData = (await Promise.allSettled(
       matchedRoutes.map(([path, fetcher]) => fetchWithPathWrapper(path, fetcher))
     )) as PromiseFulfilledResult<FetchWithPathWrapper>[];
-    return populateRoutesConfigWithData(settledData, routes);
+    return populateRoutesConfigWithData(settledData, routesConfig);
   } catch (error) {
-    return undefined;
+    return routesConfig;
   }
 };
 

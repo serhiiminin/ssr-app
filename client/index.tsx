@@ -4,11 +4,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from '../views/App';
 
 import * as serviceWorker from './serviceWorker';
+import { routes } from '../routes';
 
 ReactDOM.hydrate(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <App routes={routes} />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
