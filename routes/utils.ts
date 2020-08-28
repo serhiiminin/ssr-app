@@ -1,5 +1,5 @@
 import { matchPath } from 'react-router-dom';
-import { routes, Routes, RoutesPaths, InitialDataFetch } from './routes2';
+import { routes, Routes, RoutesPaths, InitialDataFetch } from './routes';
 
 export type MatchedRoutes = {
   [key in RoutesPaths]: InitialDataFetch;
@@ -43,7 +43,8 @@ const populateRoutesConfigWithData = (
     };
   }, routesList);
 
-type Fetch = (currentRoute: string) => Promise<Routes | undefined>;
+export type Fetch = (currentRoute: string) => Promise<Routes | undefined>;
+
 export const createFetchInitialData = (routesList: Routes): Fetch => async (currentRoute: string) => {
   try {
     const matchedRoutes = Object.entries(getMatchedRoutesWithFetchers(currentRoute, routesList)) as [

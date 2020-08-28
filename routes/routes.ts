@@ -1,50 +1,44 @@
 import { ComponentType } from 'react';
 import { IndexPage, initialFetchData as initialFetchDataIndex } from '../views/pages';
 
-enum RoutesList {
+export enum RoutesPaths {
   INDEX = '/',
   POSTS = '/posts',
   POSTS_READ = '/posts/:id',
   POSTS_EDIT = '/posts/:id/edit',
 }
 
-interface Routes {
-  [key: string]: {
-    path: RoutesList;
-    component: ComponentType;
+export type InitialDataFetch = () => Promise<any>;
+
+export type Routes = {
+  [key in RoutesPaths]: {
     exact: boolean;
-    initialDataFetch?: () => Promise<any>;
+    component: ComponentType;
+    initialDataFetch?: InitialDataFetch;
     data?: any;
     error?: any;
-    children?: Routes;
   };
-}
+};
 
 export const routes: Routes = {
-  index: {
-    path: RoutesList.INDEX,
+  [RoutesPaths.INDEX]: {
     component: IndexPage,
     exact: true,
     initialDataFetch: initialFetchDataIndex,
   },
-  posts: {
-    path: RoutesList.POSTS,
+  [RoutesPaths.POSTS]: {
     component: IndexPage,
     exact: true,
     initialDataFetch: initialFetchDataIndex,
-    children: {
-      read: {
-        path: RoutesList.POSTS_READ,
-        exact: true,
-        component: IndexPage,
-        initialDataFetch: initialFetchDataIndex,
-      },
-      edit: {
-        path: RoutesList.POSTS_EDIT,
-        exact: true,
-        component: IndexPage,
-        initialDataFetch: initialFetchDataIndex,
-      },
-    },
+  },
+  [RoutesPaths.POSTS_READ]: {
+    exact: true,
+    component: IndexPage,
+    initialDataFetch: initialFetchDataIndex,
+  },
+  [RoutesPaths.POSTS_EDIT]: {
+    exact: true,
+    component: IndexPage,
+    initialDataFetch: initialFetchDataIndex,
   },
 };
