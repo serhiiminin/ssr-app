@@ -23,3 +23,11 @@ export const IndexPage: React.FC = () => {
     </>
   );
 };
+
+export const initialFetchData = (): Promise<string> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('index');
+    }, 1000);
+  });
+};
