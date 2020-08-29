@@ -6,10 +6,12 @@ import { App } from '../views/App';
 import * as serviceWorker from './serviceWorker';
 import { routes } from '../routes';
 
+// @ts-ignore
+const data = window.GLOBAL_DATA;
 ReactDOM.hydrate(
   <React.StrictMode>
     <BrowserRouter>
-      <App routes={routes} />
+      <App routes={data} />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

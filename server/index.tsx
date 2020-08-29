@@ -19,7 +19,7 @@ const app = express();
 
 app.use(express.static('./build-client'));
 
-app.get('/*', async (req, res) => {
+app.get('/posts', async (req, res) => {
   const routesWithData = await fetchInitialData(req.url);
   const sheet = new ServerStyleSheet();
   const context = {};
@@ -39,9 +39,12 @@ app.get('/*', async (req, res) => {
     const indexTemplate = await readFile(indexFile, 'utf8');
 
     return res.send(
-      indexTemplate
-        .replace('<div id="root"></div>', `<div id="root">${markup}</div>`)
-        .replace('</head>', `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}</head>`)
+      indexTemplate.replace('<div id="root"></div>', `<div id="root">${markup}</div>`).replace(
+        '</head>',
+        `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}</head><script>
+                window.GLOBAL_DATA = ${JSON.stringify(routesWithData)}
+            </script>`
+      )
     );
   } catch (error) {
     return res.status(500).send('Oops, better luck next time!');
