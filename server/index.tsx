@@ -8,6 +8,8 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+import ssrPrepass from 'react-ssr-prepass';
+import serialize from 'serialize-javascript';
 
 import { App } from '../views/App';
 import { fetchInitialData } from '../routes';
@@ -19,19 +21,21 @@ const app = express();
 
 app.use(express.static('./build-client'));
 
-app.get('/posts', async (req, res) => {
+app.get('/*', async (req, res) => {
   const routesWithData = await fetchInitialData(req.url);
   const sheet = new ServerStyleSheet();
   const context = {};
 
   try {
-    const markup = ReactDOMServer.renderToString(
+    const element = (
       <StyleSheetManager sheet={sheet.instance}>
         <StaticRouter location={req.url} context={context}>
           <App routes={routesWithData} />
         </StaticRouter>
       </StyleSheetManager>
     );
+    await ssrPrepass(element);
+    const markup = ReactDOMServer.renderToString(element);
     const styleTags = sheet.getStyleTags();
     const helmetData = Helmet.renderStatic();
 
@@ -41,8 +45,10 @@ app.get('/posts', async (req, res) => {
     return res.send(
       indexTemplate.replace('<div id="root"></div>', `<div id="root">${markup}</div>`).replace(
         '</head>',
-        `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}</head><script>
-                window.GLOBAL_DATA = ${JSON.stringify(routesWithData)}
+        `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}
+            </head>
+            <script>
+                window.GLOBAL_DATA = ${serialize(routesWithData)}
             </script>`
       )
     );

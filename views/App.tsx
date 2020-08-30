@@ -3,7 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
 import { NotFoundPage } from './pages/404';
-import { Routes, RoutesPaths } from '../routes';
+import { Routes } from '../routes';
+import { IndexPage } from './pages';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -18,29 +19,30 @@ export interface AppProps {
   routes: Routes;
 }
 
-// @ts-ignore
-const RouteWrapper = ({ path, routes }) => {
-  console.log(path, routes);
-  return (
-    <Route
-      path={path}
-      exact={routes[path].exact}
-      component={(props: any) =>
-        React.createElement(routes[path].component, {
-          ...props,
-          data: routes[path].data,
-          error: routes[path].data,
-        })}
-    />
-  );
+const Bla = () => {
+  const promise = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(6);
+    }, 1000);
+  });
+  // throw promise;
+
+  return <div>bla</div>;
 };
+
+Bla.fetchData = () =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('bla');
+    }, 1000);
+  });
 
 export const App: React.FC<AppProps> = ({ routes }) => (
   <ThemeProvider theme={{ mode: 'light' }}>
     <GlobalStyle />
     <Switch>
-      {/*<RouteWrapper path={RoutesPaths.POSTS} routes={routes} />*/}
-      {/*<RouteWrapper path={RoutesPaths.INDEX} routes={routes} />*/}
+      <Route path="/" exact component={IndexPage} />
+      <Route path="/ton" exact component={Bla} />
       <Route path="/posts" exact render={() => <div>{routes['/posts'].data}</div>} />
       <Route component={NotFoundPage} />
     </Switch>

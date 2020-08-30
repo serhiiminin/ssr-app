@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from '../views/App';
 
 import * as serviceWorker from './serviceWorker';
-import { routes } from '../routes';
 
 // @ts-ignore
 const data = window.GLOBAL_DATA;
