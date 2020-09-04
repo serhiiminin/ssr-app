@@ -4,7 +4,7 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
 import { NotFoundPage } from './pages/404';
 import { DataProps, RoutesPaths } from '../routes';
-import { ConfiguredRoute } from './components/ConfiguredRoute';
+import { RouteWithData } from './components/RouteWithData';
 import { SwitchWithData } from './components/SwitchWithData';
 
 const GlobalStyle = createGlobalStyle`
@@ -20,10 +20,10 @@ export const App: React.FC<DataProps> = ({ data }) => (
   <ThemeProvider theme={{ mode: 'light' }}>
     <GlobalStyle />
     <SwitchWithData data={data}>
-      <ConfiguredRoute path={RoutesPaths.INDEX} />
-      <ConfiguredRoute path={RoutesPaths.POSTS} />
-      <ConfiguredRoute path={RoutesPaths.POSTS_EDIT} />
-      <ConfiguredRoute path={RoutesPaths.POSTS_READ} />
+      <RouteWithData path={RoutesPaths.INDEX} />
+      <RouteWithData path={RoutesPaths.POSTS} />
+      <RouteWithData path={RoutesPaths.POSTS_EDIT} />
+      <RouteWithData path={RoutesPaths.POSTS_READ} />
       <Route component={NotFoundPage} />
     </SwitchWithData>
     <StyledDiv>hello</StyledDiv>

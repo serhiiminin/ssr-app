@@ -1,11 +1,15 @@
-import React, { createContext } from 'react';
+import React, { createContext, ReactNode } from 'react';
 import { Switch } from 'react-router-dom';
-import { DataProps } from '../../routes';
+import { DataProps, DataRouteProps } from '../../routes';
 
-export const RouterDataContext = createContext<DataProps | null>(null);
+export const RouterDataContext = createContext<DataRouteProps | undefined>(undefined);
 
-export const SwitchWithData: React.FC<DataProps> = ({ data, children }) => (
-  <RouterDataContext.Provider value={{ data }}>
+export interface SwitchWithDataProps extends DataProps {
+  children: ReactNode;
+}
+
+export const SwitchWithData: React.FC<SwitchWithDataProps> = ({ data, children }) => (
+  <RouterDataContext.Provider value={data}>
     <Switch>{children}</Switch>
   </RouterDataContext.Provider>
 );
