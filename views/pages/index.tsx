@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
 export interface IndexPageProps {
@@ -13,17 +13,7 @@ export const initialFetchData = (): Promise<string> => {
   });
 };
 
-export const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
-  const [d, setD] = useState<string | undefined>(data);
-  useEffect(() => {
-    const fetch = async () => {
-      const da = await initialFetchData();
-      setD(da);
-    };
-    if (!data) {
-      fetch();
-    }
-  }, []);
+export const IndexPage: React.FC<IndexPageProps> = () => {
   const [count, setCount] = useState<number>(0);
   const onClick = () => {
     setCount((c: number) => c + 1);
@@ -39,7 +29,6 @@ export const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
         Save
       </button>
       <div>
-        {d}
         Index page
         {count}
       </div>

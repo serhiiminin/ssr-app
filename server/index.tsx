@@ -8,7 +8,6 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
-import ssrPrepass from 'react-ssr-prepass';
 import serialize from 'serialize-javascript';
 
 import { App } from '../views/App';
@@ -30,11 +29,11 @@ app.get('/*', async (req, res) => {
     const element = (
       <StyleSheetManager sheet={sheet.instance}>
         <StaticRouter location={req.url} context={context}>
-          <App routes={routesWithData} />
+          <App />
         </StaticRouter>
       </StyleSheetManager>
     );
-    await ssrPrepass(element);
+
     const markup = ReactDOMServer.renderToString(element);
     const styleTags = sheet.getStyleTags();
     const helmetData = Helmet.renderStatic();
