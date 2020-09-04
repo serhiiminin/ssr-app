@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
+import { DataProps } from '../../routes';
 
-export interface IndexPageProps {
-  data?: string;
-}
+export type IndexPageProps = DataProps;
 
 export const initialFetchData = (): Promise<string> => {
   return new Promise((resolve) => {
@@ -13,7 +12,7 @@ export const initialFetchData = (): Promise<string> => {
   });
 };
 
-export const IndexPage: React.FC<IndexPageProps> = () => {
+export const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
   const [count, setCount] = useState<number>(0);
   const onClick = () => {
     setCount((c: number) => c + 1);

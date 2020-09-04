@@ -10,7 +10,7 @@ const data = window.GLOBAL_DATA;
 ReactDOM.hydrate(
   <React.StrictMode>
     <BrowserRouter>
-      <App routes={data} />
+      <App data={data} />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

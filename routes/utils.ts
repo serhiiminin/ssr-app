@@ -1,63 +1,25 @@
 import { matchPath } from 'react-router-dom';
-import { routes, Routes, RoutesPaths, InitialDataFetch } from './routes';
+import { routes, Routes, RouteConfig, DataRouteProps } from './routes';
 
-export type MatchedRoutes = {
-  [key in RoutesPaths]: InitialDataFetch;
+export const createGetterRouteConfig = (routesConfig: Routes) => (currentRoute: string): RouteConfig | undefined => {
+  const foundRoute = Object.entries(routesConfig).find(([path, pathParams]) =>
+    matchPath(currentRoute, {
+      path,
+      exact: pathParams.exact,
+    })
+  );
+
+  return foundRoute && foundRoute[1];
 };
 
-export interface FetchWithPathWrapper {
-  path: string;
-  data?: any;
-  error?: any;
-}
-
-const fetchWithPathWrapper = (path: RoutesPaths, fetcher: InitialDataFetch): Promise<FetchWithPathWrapper> =>
-  fetcher()
-    .then((data) => ({ path, data }))
-    .catch((error) => ({ path, error }));
-
-const getMatchedRoutesWithFetchers = (currentRoute: string, routesConfig: Routes): MatchedRoutes =>
-  Object.entries(routesConfig).reduce((acc, [path, pathParams]) => {
-    const matchedParams = matchPath(currentRoute, { path, exact: pathParams.exact });
-    if (matchedParams && pathParams.initialDataFetch) {
-      return { ...acc, [path]: pathParams.initialDataFetch };
-    }
-
-    return acc;
-  }, {} as MatchedRoutes);
-
-const populateRoutesConfigWithData = (
-  settledData: PromiseFulfilledResult<FetchWithPathWrapper>[],
-  routesList: Routes
-) =>
-  settledData.reduce((acc, route) => {
-    const { error, data } = route.value;
-    const path = route.value.path as RoutesPaths;
+export const fetchData = async (routeConfig?: RouteConfig): Promise<DataRouteProps | undefined> => {
+  if (routeConfig && routeConfig.initialDataFetch) {
+    const data = await routeConfig.initialDataFetch();
     return {
-      ...routesList,
-      [path]: {
-        ...routesList[path],
-        data,
-        error,
-      },
+      [routeConfig.path]: data,
     };
-  }, routesList);
-
-export type Fetch = (currentRoute: string) => Promise<Routes>;
-
-export const createFetchInitialData = (routesConfig: Routes): Fetch => async (currentRoute: string) => {
-  try {
-    const matchedRoutes = Object.entries(getMatchedRoutesWithFetchers(currentRoute, routesConfig)) as [
-      RoutesPaths,
-      InitialDataFetch
-    ][];
-    const settledData = (await Promise.allSettled(
-      matchedRoutes.map(([path, fetcher]) => fetchWithPathWrapper(path, fetcher))
-    )) as PromiseFulfilledResult<FetchWithPathWrapper>[];
-    return populateRoutesConfigWithData(settledData, routesConfig);
-  } catch (error) {
-    return routesConfig;
   }
+  return undefined;
 };
 
-export const fetchInitialData = createFetchInitialData(routes);
+export const getRouteConfig = createGetterRouteConfig(routes);

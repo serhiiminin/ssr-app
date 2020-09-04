@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
 import { NotFoundPage } from './pages/404';
-import { IndexPage } from './pages';
+import { DataProps, routes, RoutesPaths } from '../routes';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -14,12 +14,26 @@ const S = styled.div`
   color: white;
 `;
 
-export const App: React.FC = () => (
+export interface ConfiguredRouteProps extends DataProps {
+  path: RoutesPaths;
+}
+
+const ConfiguredRoute = ({ path, data }: ConfiguredRouteProps) => {
+  const routeConfig = routes[path];
+  const RouteCmp = routeConfig.component;
+  const routeData = data && data[routeConfig.path];
+
+  return <Route path={routeConfig.path} exact={routeConfig.exact} render={() => <RouteCmp data={routeData} />} />;
+};
+
+export const App: React.FC<DataProps> = ({ data }) => (
   <ThemeProvider theme={{ mode: 'light' }}>
     <GlobalStyle />
     <Switch>
-      <Route path="/" exact component={IndexPage} />
-      <Route path="/posts" exact component={IndexPage} />
+      <ConfiguredRoute path={RoutesPaths.INDEX} data={data} />
+      <ConfiguredRoute path={RoutesPaths.POSTS} data={data} />
+      <ConfiguredRoute path={RoutesPaths.POSTS_EDIT} data={data} />
+      <ConfiguredRoute path={RoutesPaths.POSTS_READ} data={data} />
       <Route component={NotFoundPage} />
     </Switch>
     <S>hello</S>

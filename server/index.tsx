@@ -11,7 +11,7 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import serialize from 'serialize-javascript';
 
 import { App } from '../views/App';
-import { fetchInitialData } from '../routes';
+import { fetchData, getRouteConfig } from '../routes';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -21,7 +21,8 @@ const app = express();
 app.use(express.static('./build-client'));
 
 app.get('/*', async (req, res) => {
-  const routesWithData = await fetchInitialData(req.url);
+  const routeConfig = getRouteConfig(req.url);
+  const data = await fetchData(routeConfig);
   const sheet = new ServerStyleSheet();
   const context = {};
 
@@ -29,7 +30,7 @@ app.get('/*', async (req, res) => {
     const element = (
       <StyleSheetManager sheet={sheet.instance}>
         <StaticRouter location={req.url} context={context}>
-          <App />
+          <App data={data} />
         </StaticRouter>
       </StyleSheetManager>
     );
@@ -47,7 +48,7 @@ app.get('/*', async (req, res) => {
         `${helmetData.title.toString()}${helmetData.meta.toString()}${styleTags}
             </head>
             <script>
-                window.GLOBAL_DATA = ${serialize(routesWithData)}
+                window.GLOBAL_DATA = ${serialize(data)}
             </script>`
       )
     );
